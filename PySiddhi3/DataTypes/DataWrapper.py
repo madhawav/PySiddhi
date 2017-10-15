@@ -17,6 +17,7 @@
 from PySiddhi3 import SiddhiLoader
 from PySiddhi3.DataTypes.DoubleType import DoubleType
 from PySiddhi3.DataTypes.LongType import LongType
+from PySiddhi3.SiddhiLoader import _filterString
 
 '''
 Data Wrapping is used because python 3 doesnt support long data type
@@ -78,6 +79,8 @@ def wrapDataItem(d):
         wrapped_data = wrapped_data_proxy(d, True)
     elif type(d) is DoubleType:
         wrapped_data = wrapped_data_proxy(d, False, False, True)
+    elif type(d) is str:
+        wrapped_data = wrapped_data_proxy(_filterString(d))
     else:
         wrapped_data = wrapped_data_proxy(d)
     return wrapped_data

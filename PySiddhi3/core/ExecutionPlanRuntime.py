@@ -15,6 +15,7 @@
 # under the License.
 
 from PySiddhi3 import SiddhiLoader
+from PySiddhi3.SiddhiLoader import _filterString
 from PySiddhi3.core.query.output.callback.QueryCallback import QueryCallback
 from PySiddhi3.core.stream.input.InputHandler import InputHandler
 from PySiddhi3.core.stream.output.StreamCallback import StreamCallback
@@ -42,11 +43,11 @@ class ExecutionPlanRuntime(object):
         '''
         if isinstance(queryCallback, QueryCallback):
             SiddhiLoader.siddhi_api_core_inst.addExecutionPlanRuntimeQueryCallback(self.execution_plan_runtime_proxy,
-                                                                                   queryName,
+                                                                                   _filterString(queryName),
                                                                                    queryCallback._query_callback_proxy_inst)
         elif isinstance(queryCallback, StreamCallback):
             SiddhiLoader.siddhi_api_core_inst.addExecutionPlanRuntimeStreamCallback(self.execution_plan_runtime_proxy,
-                                                                                    queryName,
+                                                                                    _filterString(queryName),
                                                                                     queryCallback._stream_callback_proxy)
         else:
             raise NotImplementedError("Unknown type of callback")
@@ -72,7 +73,7 @@ class ExecutionPlanRuntime(object):
         :param streamId: stream id of stream
         :return: InputHandler
         '''
-        input_handler_proxy = self.execution_plan_runtime_proxy.getInputHandler(streamId)
+        input_handler_proxy = self.execution_plan_runtime_proxy.getInputHandler(_filterString(streamId))
         return InputHandler._fromInputHandlerProxy(input_handler_proxy)
 
     @classmethod
@@ -106,7 +107,7 @@ class ExecutionPlanRuntime(object):
         :param revision: Revision as a String
         :return: 
         '''
-        self.execution_plan_runtime_proxy.restoreRevision(revision)
+        self.execution_plan_runtime_proxy.restoreRevision(_filterString(revision))
 
     def restoreLastRevision(self):
         '''

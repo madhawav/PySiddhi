@@ -15,6 +15,7 @@
 # under the License.
 
 from PySiddhi3 import SiddhiLoader
+from PySiddhi3.SiddhiLoader import _filterString
 from PySiddhi3.core.ExecutionPlanRuntime import ExecutionPlanRuntime
 
 
@@ -36,7 +37,8 @@ class SiddhiManager(object):
         :param executionPlan: SiddhiQuery (string) defining execution plan
         :return: ExecutionPlanRuntime
         '''
-        execution_plan_runtime_proxy = self._siddhi_manager_proxy.createExecutionPlanRuntime(executionPlan)
+        execution_plan_runtime_proxy = self._siddhi_manager_proxy.createExecutionPlanRuntime(
+            _filterString(executionPlan))
         return ExecutionPlanRuntime._fromExecutionPlanRuntimeProxy(execution_plan_runtime_proxy)
 
     def persist(self):
@@ -62,9 +64,9 @@ class SiddhiManager(object):
         :return: 
         '''
         if isinstance(clazz, str):
-            self._siddhi_manager_proxy.setExtension(name, SiddhiLoader._loadType(clazz))
+            self._siddhi_manager_proxy.setExtension(_filterString(name), SiddhiLoader._loadType(clazz))
         else:
-            self._siddhi_manager_proxy.setExtension(name, clazz)
+            self._siddhi_manager_proxy.setExtension(_filterString(name), clazz)
 
     def shutdown(self):
         '''

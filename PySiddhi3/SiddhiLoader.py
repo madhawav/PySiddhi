@@ -125,6 +125,17 @@ def loadLibrary():
     # Resume references stored in backup
     _resumeLibrary()
 
+def _filterString(string):
+    '''
+    Converts a String to a JString. This step is required due to an issue introduced in Cython 0.27.1
+    :param string:
+    :return:
+    '''
+    # Refer: https://github.com/kivy/pyjnius/issues/300#issuecomment-335394308 for details on issue
+
+    JString = _loadType("java.lang.String")
+    return JString(string)
+
 
 def _loadType(type_name):
     loadLibrary()
